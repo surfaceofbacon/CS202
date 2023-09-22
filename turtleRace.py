@@ -19,3 +19,4 @@ elif t2.xcor() >= 200:
     t2.write('Turtle 2 wins!', font=('Arial', 16, 'normal'))
 turtle.done()
 
+print('Hello World')
