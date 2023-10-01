@@ -1,6 +1,7 @@
 import random
 import turtle
-turtle.screensize(1000, 1000)
+turtle.
+turtle.window_height()
 t1 = turtle.Turtle()
 t2 = turtle.Turtle()
 t1.penup()
