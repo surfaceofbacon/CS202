@@ -1,7 +1,4 @@
-list1 = []
-list2 = [12,4,4]
-list3 = list(range(1,4))
-list4 = list('123')
-list5 = [1, '3', 'red']
-print(list2*2)
-print(type(list5))
+import random
+while True:
+    val = random.randint(0,15)
+    print(val, hex(val).strip('0x'))
