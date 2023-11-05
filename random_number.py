@@ -11,7 +11,7 @@ def get_user_input():
 def odd_random_number(lower=1, higher=100):
     num = random.randint(lower, higher)
     if num % 2 == 1:
-        print('your random odd number is', num)
+        print(f'your random odd number is {num}')
     else:
         odd_random_number(lower, higher)
 
@@ -19,7 +19,7 @@ def odd_random_number(lower=1, higher=100):
 def even_random_number(lower=1, higher=100):
     num = random.randint(lower, higher+1)
     if num % 2 == 0:
-        print('your random odd number is', num)
+        print(f'your random even number is {num}')
     else:
         even_random_number(lower, higher)
 
