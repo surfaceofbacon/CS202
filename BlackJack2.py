@@ -43,12 +43,12 @@ def calculate_hand(hand):
     return int(total)
 
 def play_hand(hand):
-    global have_ace, wins, losses, bankroll, dwon, pwon, dealer_hand, splitted, play, bet, work, handval, dwon1, dwon2
+    global have_ace, wins, losses, bankroll, dwon, pwon, dealer_hand, bet, work, handval
+    double_down = 'False'
+
     pwon = False
-    if splitted:
-        global hand2
     handval = calculate_hand(hand)
-    print(hand)
+    #print(hand)
     if handval == 21:
         print('You hit 21!')
         pwon = True
@@ -89,27 +89,37 @@ def play_hand(hand):
                     dwon = True
                     break
         elif hit_stay.lower() == 's':
-            if splitted:
-                splitted = False
-                play_hand(hand2)
             break
     play_dealer()
+
+
 def play_dealer():
-    global have_ace, wins, losses, bankroll, dwon, pwon, dealer_hand, splitted, play, bet, work, handval, hand1, hand2
-    while True and work:
-        stand = False
-        counter = 0
-        print(counter)
-        have_ace = False
+    global have_ace, wins, losses, bankroll, dwon, pwon, dealer_hand, splitted, bet, work, handval
+    play1 = True
+    stand = False
+    have_ace = False
+    counter = 0
+    while play1 and counter < 10:
+        print(dealer_hand)
+        print(stand)
+        print(have_ace)
+        print(dwon)
+        print(pwon)
         dhandval = calculate_hand(dealer_hand)
-        if dwon or pwon:
+        print(dhandval)
+        if dwon:
+            print('dealer wins')
+            play1 = False
             break
+        if pwon:
+            print('you win')
         if dhandval > 17:
             stand = True
         if dhandval == 21:
             print(f'dealer hand: {dealer_hand}')
             print('The Dealer hit 21, you lost')
             dwon = True
+            play1 = False
             break
         if dhandval > 21:
             if have_ace:
@@ -118,30 +128,25 @@ def play_dealer():
                 print(f'dealer hand: {dealer_hand}')
                 print('the dealer busted, you win')
                 pwon = True
+                play1 = False
                 break
-        if splitted:
-            hand1val = calculate_hand(hand1)
-            hand2val = calculate_hand(hand2)
-            if dhandval > hand1val:
+        if stand:
+            if dhandval < handval:
                 print(f'dealer hand: {dealer_hand}')
-                print('the dealer beats hand 1')
-                dwon1 = True
-            if dhandval > hand2val:
-                print(f'dealer hand: {dealer_hand}')
-                print('the dealer beats hand 2')
-                dwon2 = True
-            if dwon1 or dwon2:
+                print('your hand beats the dealer hand')
+                play1 = False
+                pwon = True
                 break
-        else:
-            if dhandval > handval:
+            else:
                 print(f'dealer hand: {dealer_hand}')
-                print('the dealer wins')
+                print('dealer wins')
+                play1 = False
                 dwon = True
-
+                break
         if not stand:
             dealer_hand.append(deck.pop())
         counter += 1
-    if dwon or dwon1 or dwon2:
+    if dwon:
         bankroll -= bet
         losses += 1
     elif pwon:
@@ -149,7 +154,10 @@ def play_dealer():
         wins += 1
 
 
+
 stand = False
+
+
 def endgame():
     global play
     play = False
@@ -158,12 +166,13 @@ def endgame():
 
 
 work = True
+
 while play:
+    user_split = None
     if bankroll <= 0:
         print('You dont have the funds to play again')
         endgame()
         break
-    splitted = False
     able_split = False
     bet = int(input('What would you like to bet?: '))
     if bankroll <= 0:
@@ -178,22 +187,11 @@ while play:
         work = True
     have_ace = False
     dwon = False
-    dwon1 = False
-    dwon2 = False
-    pwon = False
     hand, dealer_hand, deck = shuffle_deck()
     if work:
         print(f'Your Hand: {hand[0]}, {hand[1]}')
         print(f'Dealers Hand: {dealer_hand[0]}, (??)')
-    if hand[0][0] == hand[1][0]:
-        able_split = True
-        user_split = input('Would you like to split? y/n: ')
-    if able_split and user_split.lower() == 'y':
-        splitted = True
-        hand1, hand2 = split(hand)
-        play_hand(hand1)
-    else:
-        play_hand(hand)
+    play_hand(hand)
     again = input('would you like to play again? y/n: ')
     if again.lower() == 'n':
         endgame()
